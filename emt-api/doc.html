@@ -38,12 +38,20 @@
       <div class="container">        
         <div class="row">
           <div class="col-sm-8 mx-auto">
-            <div class="title mb-5">
-              <h2 class="fw-light">Introduction</h2>
+            <div class="title mb-3">
+              <h2 class="fw-light">INTEGRATION</h2>
             </div>
 
             <div class="card border-0 p-3">
-              <h4>Oauth</h4>
+              <h4 class="bg-primary text-white p-2">Introduction EMT H2H API</h4>
+              <h5>Overview of Integration API</h5>
+              <h5>Base URL</h5>
+              <ul>
+                <li>https://api.ptx.xyz (Production Server Live Data)</li>
+                <li>https://api-sbx.ptx.xyz (Sandbox Server Test Data)</li>
+              </ul>
+              <div class="my-3"></div>
+              <h5>Request</h5>
               <table class="table table-responsive">
                 <thead>
                   <tr>
@@ -55,97 +63,320 @@
                 <tbody>
                   <tr>
                     <td>POST</td>
-                    <td>/api/oauth/token</td>
-                    <td>Get Access Token for Oauth2.0</td>
-                  </tr>
-                  <tr>
-                    <td>GET</td>
-                    <td>/banking/v3/corporates/{CorporateID} /accounts/{AccountNumber1},{AccountNumber2},…,{AccountNumber20}</td>
-                    <td>Get your account(s) balance</td>
-                  </tr>
-                  <tr>
-                    <td>GET</td>
-                    <td>/banking/v3/corporates/{CorporateID} /accounts/{AccountNumber}/statements</td>
-                    <td>Get your account statement</td>
+                    <td>/auth/token</td>
+                    <td>Get Access Token (auth_token) for Oauth2</td>
                   </tr>
                   <tr>
                     <td>POST</td>
-                    <td>/banking/corporates/transfers</td>
-                    <td>Fund Transfer to another EMT account</td>
+                    <td>/auth/refresh</td>
+                    <td>Get a new auth_token</td>
+                  </tr>
+                  <tr>
+                    <td>POST</td>
+                    <td>/topup</td>
+                    <td>Send topup request</td>
+                  </tr>
+                  <tr>
+                    <td>GET</td>
+                    <td>/topup/{slug}</td>
+                    <td>Get Topup Detail By Slug</td>
+                  </tr>
+                  <tr>
+                    <td>GET</td>
+                    <td>/topup/?ref_code={ref_code}</td>
+                    <td>Get Detail of Specific Topup by using its reference Code when using ref_code if more than one Record is found only the latest one will be returned</td>
+                  </tr>
+                  <tr>
+                    <td>GET</td>
+                    <td>/balance</td>
+                    <td>Get wallet data</td>
+                  </tr>
+                  <tr>
+                    <td>GET</td>
+                    <td>/history/topup</td>
+                    <td>Topup request history data</td>
+                  </tr>
+                  <tr>
+                    <td>GET</td>
+                    <td>/history/wallet</td>
+                    <td>Successful transaction data history/entered balance history</td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
             <div class="card border-0 p-3">
-              <h4>Header</h4>
+              <h4 class="bg-primary text-white p-2">Authentication Oauth2 (Access Token)</h4>
+              <span>Access Token is used to identify a user or device.</span>
+
+              <div class="my-3"></div>
+              <h5>Request</h5>
               <table class="table table-responsive">
                 <thead>
                   <tr>
-                    <th scope="col">Method</th>
-                    <th scope="col">Endpoint</th>
-                    <th scope="col">Usage</th>
+                    <th>Setting</th>
+                    <th>Value</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
+                    <td>HTTP Method</td>
                     <td>POST</td>
-                    <td>/api/oauth/token</td>
-                    <td>Get Access Token for Oauth2.0</td>
                   </tr>
                   <tr>
-                    <td>GET</td>
-                    <td>/banking/v3/corporates/{CorporateID} /accounts/{AccountNumber1},{AccountNumber2},…,{AccountNumber20}</td>
-                    <td>Get your account(s) balance</td>
+                    <td>Path</td>
+                    <td>/auth/token</td>
                   </tr>
                   <tr>
-                    <td>GET</td>
-                    <td>/banking/v3/corporates/{CorporateID} /accounts/{AccountNumber}/statements</td>
-                    <td>Get your account statement</td>
+                    <td>Host </td>
+                    <td>https://api-sbx.ptx.xyz</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="my3"></div>
+
+              <h5>Request Headers</h5>
+              <table class="table table-responsive">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Format</th>
+                    <th>Mandatory</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Authorization</td>
+                    <td>Basic base64(client_id:client_secret)</td>
+                    <td>Yes</td>
+                    <td></td>
                   </tr>
                   <tr>
-                    <td>POST</td>
-                    <td>/banking/corporates/transfers</td>
-                    <td>Fund Transfer to another EMT account</td>
+                    <td>Content-Type</td>
+                    <td>application/json</td>
+                    <td>Yes</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="my3"></div>
+
+              <h5>Request</h5>
+              <table class="table table-responsive">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Format</th>
+                    <th>Mandatory</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>grant_type</td>
+                    <td>String</td>
+                    <td>Yes</td>
+                    <td>Value = client_credentials</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="my3"></div>
+              
+              <h5>Result of the request will contain the following information :</h5>
+              <h5>Response</h5>
+              <table class="table table-responsive">
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>DataType</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>access_token</td>
+                    <td>String</td>
+                    <td>Your access_token</td>
+                  </tr>
+                  <tr>
+                    <td>token_type</td>
+                    <td>String</td>
+                    <td>Default is Bearer</td>
+                  </tr>
+                  <tr>
+                    <td>expires_in  </td>
+                    <td>String</td>
+                    <td>access_token validity, in x-seconds</td>
+                  </tr>
+                  <tr>
+                    <td>refresh_token  </td>
+                    <td>String</td>
+                    <td>Used instead of client_id:client_secret but is one timeuse to get new auth_token</td>
+                  </tr>
+                  <tr>
+                    <td>scope</td>
+                    <td>String</td>
+                    <td>Application scope / permission granted to application</td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            
             <div class="card border-0 p-3">
-              <h4>Request</h4>
+              <h4 class="bg-primary text-white p-2">Authentication Oauth2 (Refresh Token)</h4>
+              <span>Refresh Token is used instead of client_id:client_secret but it is one-time-usage to get a new auth_token.</span>
+
+              <div class="my-3"></div>
+              <h5>Request</h5>
               <table class="table table-responsive">
                 <thead>
                   <tr>
-                    <th scope="col">Method</th>
-                    <th scope="col">Endpoint</th>
-                    <th scope="col">Usage</th>
+                    <th>Setting</th>
+                    <th>Value</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
+                    <td>HTTP Method</td>
                     <td>POST</td>
-                    <td>/api/oauth/token</td>
-                    <td>Get Access Token for Oauth2.0</td>
                   </tr>
                   <tr>
-                    <td>GET</td>
-                    <td>/banking/v3/corporates/{CorporateID} /accounts/{AccountNumber1},{AccountNumber2},…,{AccountNumber20}</td>
-                    <td>Get your account(s) balance</td>
+                    <td>Path</td>
+                    <td>/auth/refresh</td>
                   </tr>
                   <tr>
-                    <td>GET</td>
-                    <td>/banking/v3/corporates/{CorporateID} /accounts/{AccountNumber}/statements</td>
-                    <td>Get your account statement</td>
-                  </tr>
-                  <tr>
-                    <td>POST</td>
-                    <td>/banking/corporates/transfers</td>
-                    <td>Fund Transfer to another EMT account</td>
+                    <td>Host </td>
+                    <td>https://api-sbx.ptx.xyz</td>
                   </tr>
                 </tbody>
               </table>
+
+              <div class="my3"></div>
+
+              <table class="table table-responsive">
+                <h5>Request Headers</h5>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Format</th>
+                    <th>Mandatory</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Authorization  </td>
+                    <td>Bearer refresh_token </td>
+                    <td>Yes</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Content-Type  </td>
+                    <td>application/json</td>
+                    <td>Yes</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="my3"></div>
+
+              <table class="table table-responsive">
+                <h5>Request</h5>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Format</th>
+                    <th>Mandatory</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>grant_type  </td>
+                    <td>String </td>
+                    <td>Yes</td>
+                    <td>Value = refresh_token</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="my3"></div>
+
+              <h5>Result of the request will contain the following information :</h5>
+              <h5>Response</h5>
+              <table class="table table-responsive">
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>DataType</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>access_token</td>
+                    <td>String</td>
+                    <td>Your access_token</td>
+                  </tr>
+                  <tr>
+                    <td>token_type</td>
+                    <td>String</td>
+                    <td>Default is Bearer</td>
+                  </tr>
+                  <tr>
+                    <td>expires_in</td>
+                    <td>String</td>
+                    <td>access_token validity, in x-seconds</td>
+                  </tr>
+                  <tr>
+                    <td>refresh_token  </td>
+                    <td>String</td>
+                    <td>Used instead of client_id:client_secret but is one time use to get new auth_</td>
+                  </tr>
+                  <tr>
+                    <td>scope </td>
+                    <td>String</td>
+                    <td>Application scope / permission granted to application</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card border-0 p-3">
+              <h4 class="bg-primary text-white p-2">TOPUP</h4>
+              <span>Topup is used to send topup request.</span>
+
+              <div class="my-3"></div>
+              <h5>Request</h5>
+              <table class="table table-responsive">
+                <thead>
+                  <tr>
+                    <th>Setting</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>HTTP Method</td>
+                    <td>POST</td>
+                  </tr>
+                  <tr>
+                    <td>Path</td>
+                    <td>/topup</td>
+                  </tr>
+                  <tr>
+                    <td>Host </td>
+                    <td>https://api-sbx.ptx.xyz</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="my3"></div>
             </div>
           </div>
         </div>
